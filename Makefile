@@ -1,14 +1,14 @@
 CC = clang++
+CCFLAGS = -fsanitize=address -g -O1 
+LDFAGS = -fsanitize=address
 
 all: clean main.plist main.exe run
 
 main.exe: main.cpp | ./build
-	@echo "compiling main.cpp..."
-	@${CC} main.cpp -o ./build/main.exe
+	${CC} ${CCFLAGS} main.cpp -o ./build/main.exe ${LDFLAGS}
 
 main.plist: main.cpp | ./plist
-	@echo "analyzing main.cpp..."
-	@${CC} --analyze main.cpp -o ./plist/main.plist
+	${CC} ${CCFLAGS} --analyze main.cpp -o ./plist/main.plist
 
 ./plist:
 	@mkdir ./plist

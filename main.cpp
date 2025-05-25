@@ -2,4 +2,10 @@
 
 using namespace std;
 
-int main() { cout << "hello world" << endl; }
+int main() {
+  int *p = (int *)malloc(sizeof(int));
+
+  free(p);
+
+  cout << *p << endl;
+}
