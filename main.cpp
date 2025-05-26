@@ -1,9 +1,17 @@
+#include <cstddef>
 #include <cstring>
 #include <iostream>
 
 using namespace std;
 
-#define T int
+
+struct Entry {
+  char judul[250];
+  int nominal;
+};
+
+
+#define T Entry
 struct Node {
   T value;
   Node *next;
@@ -28,25 +36,62 @@ void node__free(Node *head) {
   }
 }
 
-void node__print_T(Node *head) {
-  if (head == nullptr) {
-    cout << "NULL" << endl;
-    return;
-  }
 
-  Node *current = head;
+/**
+*  menyisipkan nilai didepan linkedlist
+*  contoh :
+*
+* Node *n = nullptr;
+* node__sisip_depan(n, {
+  * .judul = "bakso"
+  * .nominal = 10000
+  * });
+* node__sisip_depan(n, {
+  * .judul = "mie ayam"
+  * .nominal = 10000
+  * });
+* node_entry__print(n); 
+* node__free(n);
+* // output : mieayam->bakso->nullptr
+*/
 
-  while (current != nullptr) {
-    cout << current->value << "->";
-    current = current->next;
-  } 
-
-  cout << "NULL" << endl;
-}
 
 void node__sisip_depan(Node *&head, T data) {
   head = node__tambah(data, head);
 }
+
+/**
+ * menghapus nilai dalam linkedlist berdasarkan alamat dalam memory
+ * penggunaan:
+ *
+ * Node *n = nullptr;
+ *
+ * node__sisip
+* node__sisip_depan(n, {
+  * .judul = "bakso"
+  * .nominal = 10000
+  * });
+* node__sisip_depan(n, {
+  * .judul = "mie ayam"
+  * .nominal = 10000
+  * });
+  *
+  * node_entry__print(n); // mieayam->bakso->nullptr
+  *
+  * node__hapus_berdasarkan_alamat(n, n->next);
+ *
+  * node_entry__print(n); // mieayam->nullptr
+  * node__free(n);
+  *
+  * penjelasan:
+  * misal linkedlist berikut
+  * n = a->b->c->nullptr
+  *
+  * misal b memiliki alamat 0x7FFDE13A9C40
+  *
+  * node__hapus_berdasarkan_alamat(n, 0x7FFDE13A9C40)
+  * maka n = a->c->nullptr
+ */
 
 void node__hapus_berdasarkan_alamat(Node *&head, Node *target) {
   if (target == nullptr) {
@@ -72,7 +117,33 @@ void node__hapus_berdasarkan_alamat(Node *&head, Node *target) {
   }
 }
 
+/**
+ * mencetak seluruh entry yang tersimpan dalam linkedlist
+ * */
+void node_entry__print(Node *head) {
+  if (head == nullptr) {
+    cout << "entry kosong." << endl << endl;
+    return;
+  }
 
+  Node *current = head;
+
+  while (current != nullptr) {
+    cout << "===" << endl;
+    cout << "Judul: " << current->value.judul << endl;
+    cout << "Nominal: " << current->value.nominal << endl << endl;
+    current = current->next;
+  } 
+}
+
+/**
+ * menyimpan target bulanan dalam file
+ * penggunaan:
+ *
+ * int target_bulanan = 20000;
+ *
+ * file__simpan_target_bulanan(&target_bulanan);
+ * */
 void file__simpan_target_bulanan(int *target_bulanan) {
   FILE *file_target_bulanan = fopen("./store/target_bulanan.bin", "wb");
 
@@ -81,6 +152,15 @@ void file__simpan_target_bulanan(int *target_bulanan) {
   fclose(file_target_bulanan);
 }
 
+
+/**
+ * membaca target bulanan dari file
+ * penggunaan:
+ *
+ * int target_bulanan;
+ *
+ * file__baca_target_bulanan(&target_bulanan);
+ * */
 void file__baca_target_bulanan(int *target_bulanan) {
   FILE *file_target_bulanan = fopen("./store/target_bulanan.bin", "rb");
   fread(target_bulanan, sizeof(int), 1, file_target_bulanan);
@@ -88,7 +168,10 @@ void file__baca_target_bulanan(int *target_bulanan) {
   fclose(file_target_bulanan);
 }
 
-void file__reset_target_bulanan(int *target_bulanan) {
+/**
+* mereset data yang tersimpan dalam file target bulanan
+* */
+void file__reset_target_bulanan() {
   FILE *file_target_bulanan = fopen("./store/target_bulanan.bin", "wb");
   int overwrite_value = 0;
   fwrite(&overwrite_value, sizeof(int), 1, file_target_bulanan);
@@ -96,42 +179,59 @@ void file__reset_target_bulanan(int *target_bulanan) {
   fclose(file_target_bulanan);
 }
 
-void file__simpan_linkedlist(Node *&head) {
+/**
+ * simpan linkedlist berisi entry ke dalam file
+ * penggunaan:
+ *
+ * Node *n = nullptr;
+ * node__sisip_depan(n, 3);
+ * node__sisip_depan(n, 2);
+ * node__sisip_depan(n, 1);
+ *
+ * file__simpan_linkedlist_entry(n);
+ * node__free(n);
+ * */
+
+void file__simpan_linkedlist_entry(Node *&head) {
   FILE *file_linkedlist = fopen("./store/linkedlist.bin", "wb");
 
   Node *current = head;
 
   while (current != nullptr) {
-    fwrite(&(current->value), sizeof(T), 1, file_linkedlist);
+    fwrite(&current->value, sizeof(T), 1, file_linkedlist);
+
     current = current->next;
   }
 
   fclose(file_linkedlist);
 }
 
-void file__baca_linkedlist(Node *&head) {
+/**
+ * membaca linkedlist berisi entry dari file
+ * penggunaan:
+ *
+ * Node *n = nullptr;
+ *
+ * file__baca_linkedlist_entry(n);
+ *
+ * node__free(n);
+ * */
+// WARNING: pembacaan file membuat linkedlist menjadi terbalik
+// TODO: tambahkan sisip belakang
+void file__baca_linkedlist_entry(Node *&head) {
   FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
 
-  T value;
-
-  while (fread(&value, sizeof(T), 1, file_linkedlist)) {
+  while (true) {
+    T value;
+    if (fread(&value, sizeof(T), 1, file_linkedlist) != 1) break;
     node__sisip_depan(head, value);
   }
 
   fclose(file_linkedlist);
 }
 
+Node *ENTRY_PENGELUARAN = nullptr;
+
 int main() {
-  Node *n = nullptr;
-  /*node__sisip_depan(n, 4);*/
-  /*node__sisip_depan(n, 3);*/
-  /*node__sisip_depan(n, 2);*/
-  /*node__sisip_depan(n, 1);*/
-  /**/
-  /*file__simpan_linkedlist(n);*/
-
-  file__baca_linkedlist(n);
-
-  node__print_T(n);
-  node__free(n);
+  node__free(ENTRY_PENGELUARAN);
 }
