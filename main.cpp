@@ -23,6 +23,16 @@ Node *node__tambah(T data, Node *next) {
   return node_baru;
 }
 
+void node__free(Node *head) {
+  Node *current = head;
+
+  while (current != nullptr) {
+    Node *next = current->next;
+    delete current;
+    current = next;
+  }
+}
+
 void node__print_T(Node *head) {
   if (head == nullptr) {
     cout << "NULL" << endl;
@@ -37,15 +47,9 @@ void node__print_T(Node *head) {
   } 
 
   cout << "NULL" << endl;
-
-  current = head;
-
-  while (current != nullptr) {
-    Node *next = current->next;
-    delete current;
-    current = next;
-  }
+  node__free(head);
 }
+
 
 
 
