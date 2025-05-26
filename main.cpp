@@ -50,10 +50,15 @@ void node__print_T(Node *head) {
   node__free(head);
 }
 
-
+void node__sisip_depan(Node *&head, T data) {
+  head = node__tambah(data, head);
+}
 
 int main() {
   Node *n = node__tambah(1, node__tambah(2, nullptr));
+
+  node__sisip_depan(n, 3);
+  node__sisip_depan(n, 4);
 
   node__print_T(n);
 }
