@@ -2,12 +2,6 @@
 
 using namespace std;
 
-struct Entry {
-  int id;
-  string judul;
-  int nominal;
-};
-
 void file__simpan_target_bulanan(int *target_bulanan) {
   FILE *file_target_bulanan = fopen("./store/target_bulanan.bin", "wb");
 
