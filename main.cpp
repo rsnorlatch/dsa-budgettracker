@@ -69,7 +69,6 @@ void node__hapus_berdasarkan_alamat(Node *&head, Node *target) {
     }
 
     current->next = current->next->next;
-    delete target;
   }
 }
 
