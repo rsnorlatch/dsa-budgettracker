@@ -2,12 +2,6 @@
 
 using namespace std;
 
-struct Entry {
-  int id;
-  string judul;
-  int nominal;
-};
-
 
 #define T int
 struct Node {
