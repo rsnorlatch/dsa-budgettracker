@@ -15,15 +15,37 @@ struct Node {
   Node *next;
 };
 
-Node *node__add(T data, Node *next) {
-  Node *new_node = new Node;
-  new_node->value = data;
-  new_node->next = next;
+Node *node__tambah(T data, Node *next) {
+  Node *node_baru = new Node;
+  node_baru->value = data;
+  node_baru->next = next;
 
-  return new_node;
+  return node_baru;
 }
 
+void node__print_T(Node *head) {
+  if (head == nullptr) {
+    cout << "NULL" << endl;
+    return;
+  }
 
+  Node *current = head;
+
+  while (current != nullptr) {
+    cout << current->value << "->";
+    current = current->next;
+  } 
+
+  cout << "NULL" << endl;
+
+  current = head;
+
+  while (current != nullptr) {
+    Node *next = current->next;
+    delete current;
+    current = next;
+  }
+}
 
 
 
@@ -51,5 +73,7 @@ void file__reset_target_bulanan(int *target_bulanan) {
 }
 
 int main() {
+  Node *n = node__tambah(1, node__tambah(2, nullptr));
 
+  node__print_T(n);
 }
