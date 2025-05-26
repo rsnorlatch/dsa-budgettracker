@@ -4,8 +4,7 @@ using namespace std;
 
 int main() {
   int *p = (int *)malloc(sizeof(int));
-
-  free(p);
+  *p = 10;
 
   cout << *p << endl;
 }
