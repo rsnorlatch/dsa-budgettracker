@@ -8,6 +8,25 @@ struct Entry {
   int nominal;
 };
 
+
+#define T int
+struct Node {
+  T value;
+  Node *next;
+};
+
+Node *node__add(T data, Node *next) {
+  Node *new_node = new Node;
+  new_node->value = data;
+  new_node->next = next;
+
+  return new_node;
+}
+
+
+
+
+
 void file__simpan_target_bulanan(int *target_bulanan) {
   FILE *file_target_bulanan = fopen("./store/target_bulanan.bin", "wb");
 
@@ -32,4 +51,5 @@ void file__reset_target_bulanan(int *target_bulanan) {
 }
 
 int main() {
+
 }
