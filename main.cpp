@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 
 using namespace std;
@@ -96,14 +97,42 @@ void file__reset_target_bulanan(int *target_bulanan) {
   fclose(file_target_bulanan);
 }
 
+void file__simpan_linkedlist(Node *&head) {
+  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "wb");
+
+  Node *current = head;
+
+  while (current != nullptr) {
+    fwrite(&(current->value), sizeof(T), 1, file_linkedlist);
+    current = current->next;
+  }
+
+  fclose(file_linkedlist);
+}
+
+void file__baca_linkedlist(Node *&head) {
+  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
+
+  T value;
+
+  while (fread(&value, sizeof(T), 1, file_linkedlist)) {
+    node__sisip_depan(head, value);
+  }
+
+  fclose(file_linkedlist);
+}
+
 int main() {
-  Node *n = node__tambah(1, node__tambah(2, nullptr));
+  Node *n = nullptr;
+  /*node__sisip_depan(n, 4);*/
+  /*node__sisip_depan(n, 3);*/
+  /*node__sisip_depan(n, 2);*/
+  /*node__sisip_depan(n, 1);*/
+  /**/
+  /*file__simpan_linkedlist(n);*/
 
-  node__sisip_depan(n, 3);
-  node__sisip_depan(n, 4);
+  file__baca_linkedlist(n);
 
-  node__print_T(n);
-  node__hapus_berdasarkan_alamat(n, n);
   node__print_T(n);
   node__free(n);
 }

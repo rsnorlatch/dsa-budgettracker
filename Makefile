@@ -3,7 +3,7 @@ CCFLAG = -g -O1 -fsanitize=address
 
 all: clean run
 
-run: main.exe
+run: main.plist main.exe
 	@./build/main.exe
 
 main.exe: main.cpp | ./build
