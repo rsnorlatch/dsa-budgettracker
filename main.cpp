@@ -302,15 +302,13 @@ void file__simpan_linkedlist_entry(Node *&head) {
  *
  * node__free(n);
  * */
-// WARNING: pembacaan file membuat linkedlist menjadi terbalik
-// TODO: tambahkan sisip belakang
 void file__baca_linkedlist_entry(Node *&head) {
   FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
 
   while (true) {
     T value;
     if (fread(&value, sizeof(T), 1, file_linkedlist) != 1) break;
-    node__sisip_depan(head, value);
+    node__sisip_belakang(head, value);
   }
 
   fclose(file_linkedlist);
