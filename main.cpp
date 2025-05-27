@@ -155,6 +155,23 @@ Node *node_entry__cari_berdasarkan_judul(Node *head, string target) {
   return nullptr;
 }
 
+int node_entry__sum_nominal(Node *head) {
+  if (head == nullptr) {
+    return 0;
+  }
+
+  Node *current = head;
+  int accumulator = 0;
+
+  while (current != nullptr) {
+    accumulator += current->value.nominal;
+
+    current = current->next;
+  }
+
+  return accumulator;
+}
+
 /**
  * menyimpan target bulanan dalam file
  * penggunaan:
@@ -254,7 +271,7 @@ Node *ENTRY_PENGELUARAN = nullptr;
 int main() {
   node__sisip_depan(ENTRY_PENGELUARAN, {
     .judul = "makanan",
-    .nominal = 10000
+    .nominal = 15000
   });
 
   node__sisip_depan(ENTRY_PENGELUARAN, {
@@ -262,9 +279,16 @@ int main() {
     .nominal = 10000
   });
 
+  node__sisip_depan(ENTRY_PENGELUARAN, {
+    .judul = "snack",
+    .nominal = 10000
+  });
+
   Node *target = node_entry__cari_berdasarkan_judul(ENTRY_PENGELUARAN, "makanan");
+  int sum_nominal = node_entry__sum_nominal(ENTRY_PENGELUARAN);
 
   cout << "judul penemuan: " << target->value.judul << endl;
+  cout << "sum pengeluaran: " << sum_nominal << endl;
   
 
   node__free(ENTRY_PENGELUARAN);
