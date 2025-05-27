@@ -48,6 +48,24 @@ void node__sisip_depan(Node *&head, T data) {
   head = node__tambah(data, head);
 }
 
+void node__sisip_belakang(Node *&head, T data) {
+  if (head == nullptr) {
+    head = node__tambah(data, nullptr);
+    return;
+  }
+
+  Node *current = head;
+
+  while (current != nullptr) {
+    if (current->next == nullptr) {
+      current->next = node__tambah(data, nullptr);
+      return;
+    }
+
+    current = current->next;
+  }
+}
+
 void node__hapus_berdasarkan_alamat(Node *&head, Node *target) {
   if (target == nullptr) {
     cout << "[ERROR] anda mencoba menghapus nullpointer!!!" << endl;
@@ -73,13 +91,13 @@ void node__hapus_berdasarkan_alamat(Node *&head, Node *target) {
 }
 
 int main() {
-  Node *n = node__tambah(1, node__tambah(2, nullptr));
+  Node *n = nullptr;
 
-  node__sisip_depan(n, 3);
-  node__sisip_depan(n, 4);
+  node__sisip_belakang(n, 1);
+  node__sisip_belakang(n, 2);
+  node__sisip_belakang(n, 3);
+  node__sisip_belakang(n, 4);
 
-  node__print_T(n);
-  node__hapus_berdasarkan_alamat(n, n);
   node__print_T(n);
   node__free(n);
 }
