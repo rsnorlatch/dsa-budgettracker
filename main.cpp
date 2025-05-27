@@ -1,5 +1,4 @@
 #include <cassert>
-#include <cstddef>
 #include <cstring>
 #include <iostream>
 
@@ -252,20 +251,5 @@ void file__baca_linkedlist_entry(Node *&head) {
 Node *ENTRY_PENGELUARAN = nullptr;
 
 int main() {
-  node__sisip_depan(ENTRY_PENGELUARAN, {
-    .judul = "makanan",
-    .nominal = 10000
-  });
-
-  node__sisip_depan(ENTRY_PENGELUARAN, {
-    .judul = "minuman",
-    .nominal = 10000
-  });
-
-  Node *target = node_entry__cari_berdasarkan_judul(ENTRY_PENGELUARAN, "makanan");
-
-  cout << "judul penemuan: " << target->value.judul << endl;
-  
-
   node__free(ENTRY_PENGELUARAN);
 }
