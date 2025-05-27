@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstddef>
 #include <cstring>
 #include <iostream>
@@ -136,6 +137,24 @@ void node_entry__print(Node *head) {
   } 
 }
 
+Node *node_entry__cari_berdasarkan_judul(Node *head, string target) {
+  if (head == nullptr) {
+    return nullptr;
+  }
+
+  Node *current = head;
+
+  while (current != nullptr) {
+    if (current->value.judul == target) {
+      return current;
+    }
+
+    current = current->next;
+  }
+
+  return nullptr;
+}
+
 /**
  * menyimpan target bulanan dalam file
  * penggunaan:
@@ -233,5 +252,20 @@ void file__baca_linkedlist_entry(Node *&head) {
 Node *ENTRY_PENGELUARAN = nullptr;
 
 int main() {
+  node__sisip_depan(ENTRY_PENGELUARAN, {
+    .judul = "makanan",
+    .nominal = 10000
+  });
+
+  node__sisip_depan(ENTRY_PENGELUARAN, {
+    .judul = "minuman",
+    .nominal = 10000
+  });
+
+  Node *target = node_entry__cari_berdasarkan_judul(ENTRY_PENGELUARAN, "makanan");
+
+  cout << "judul penemuan: " << target->value.judul << endl;
+  
+
   node__free(ENTRY_PENGELUARAN);
 }
