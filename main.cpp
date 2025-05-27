@@ -154,6 +154,23 @@ Node *node_entry__cari_berdasarkan_judul(Node *head, string target) {
   return nullptr;
 }
 
+int node_entry__sum_nominal(Node *head) {
+  if (head == nullptr) {
+    return 0;
+  }
+
+  Node *current = head;
+  int accumulator = 0;
+
+  while (current != nullptr) {
+    accumulator += current->value.nominal;
+
+    current = current->next;
+  }
+
+  return accumulator;
+}
+
 /**
  * menyimpan target bulanan dalam file
  * penggunaan:
