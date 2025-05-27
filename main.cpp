@@ -136,6 +136,22 @@ void node_entry__print(Node *head) {
   } 
 }
 
+/**
+ * mencari node berdasarkan judul
+ * penggunaan:
+* node__sisip_depan(n, {
+  * .judul = "bakso"
+  * .nominal = 10000
+  * });
+* node__sisip_depan(n, {
+  * .judul = "mie ayam"
+  * .nominal = 20000
+  * });
+ *
+ * Node *node_mie_ayam = node_entry__cari_berdasarkan_judul(ENTRY_PENGELUARAN, "mie ayam");
+ * cout << node_mie_ayam->nominal << endl; // 20000
+ * 
+ * */
 Node *node_entry__cari_berdasarkan_judul(Node *head, string target) {
   if (head == nullptr) {
     return nullptr;
@@ -154,6 +170,23 @@ Node *node_entry__cari_berdasarkan_judul(Node *head, string target) {
   return nullptr;
 }
 
+
+/**
+ * menjumlahkan semua nominal dalam linkedlist
+ * penggunaan:
+ *
+* node__sisip_depan(n, {
+  * .judul = "bakso"
+  * .nominal = 10000
+  * });
+* node__sisip_depan(n, {
+  * .judul = "mie ayam"
+  * .nominal = 20000
+  * });
+ * int total_nominal = node_entry__sum_nominal(ENTRY_PENGELUARAN);
+ *
+ * cout << total_nominal << endl; // 30000
+ * */
 int node_entry__sum_nominal(Node *head) {
   if (head == nullptr) {
     return 0;
