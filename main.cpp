@@ -93,6 +93,24 @@ void node__sisip_depan(Node *&head, T data) {
   * maka n = a->c->nullptr
  */
 
+void node__sisip_belakang(Node *&head, T data) {
+  if (head == nullptr) {
+    head = node__tambah(data, nullptr);
+    return;
+  }
+
+  Node *current = head;
+
+  while (current != nullptr) {
+    if (current->next == nullptr) {
+      current->next = node__tambah(data, nullptr);
+      return;
+    }
+
+    current = current->next;
+  }
+}
+
 void node__hapus_berdasarkan_alamat(Node *&head, Node *target) {
   if (target == nullptr) {
     cout << "[ERROR] anda mencoba menghapus nullpointer!!!" << endl;
