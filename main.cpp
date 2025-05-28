@@ -90,14 +90,32 @@ void node__hapus_berdasarkan_alamat(Node *&head, Node *target) {
   }
 }
 
+Node *node__cari_berdasarkan_index(Node *&head, int target_index) {
+  Node *current = head;
+  
+  for (int i = 1; current != nullptr; i++) {
+    if (i == target_index) {
+      return current;
+    }
+
+    current = current->next;
+  }
+
+  return nullptr;
+}
+
 int main() {
   Node *n = nullptr;
 
-  node__sisip_belakang(n, 1);
-  node__sisip_belakang(n, 2);
-  node__sisip_belakang(n, 3);
-  node__sisip_belakang(n, 4);
+  node__sisip_depan(n, 1);
+  node__sisip_depan(n, 2);
+  node__sisip_depan(n, 3);
+  node__sisip_depan(n, 4);
 
   node__print_T(n);
+
+  Node *empat = node__cari_berdasarkan_index(n, 2);
+  cout << empat->value << endl;
+
   node__free(n);
 }
