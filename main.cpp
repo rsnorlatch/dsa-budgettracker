@@ -61,6 +61,24 @@ void node__sisip_depan(Node *&head, T data) {
   head = node__tambah(data, head);
 }
 
+void node__sisip_belakang(Node *&head, T data) {
+  if (head == nullptr) {
+    head = node__tambah(data, nullptr);
+    return;
+  }
+
+  Node *current = head;
+
+  while (current != nullptr) {
+    if (current->next == nullptr) {
+      current->next = node__tambah(data, nullptr);
+      return;
+    }
+
+    current = current->next;
+  }
+}
+
 /**
  * menghapus nilai dalam linkedlist berdasarkan alamat dalam memory
  * penggunaan:
@@ -252,15 +270,13 @@ void file__simpan_linkedlist_entry(Node *&head) {
  *
  * node__free(n);
  * */
-// WARNING: pembacaan file membuat linkedlist menjadi terbalik
-// TODO: tambahkan sisip belakang
 void file__baca_linkedlist_entry(Node *&head) {
   FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
 
   while (true) {
     T value;
     if (fread(&value, sizeof(T), 1, file_linkedlist) != 1) break;
-    node__sisip_depan(head, value);
+    node__sisip_belakang(head, value);
   }
 
   fclose(file_linkedlist);
