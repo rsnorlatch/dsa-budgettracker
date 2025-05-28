@@ -148,8 +148,8 @@ void node_entry__print(Node *head) {
 
   Node *current = head;
 
-  while (current != nullptr) {
-    cout << "===" << endl;
+  for (int i = 0; current != nullptr; i++) {
+    cout << "=== " << i << "===" << endl;
     cout << "Judul: " << current->value.judul << endl;
     cout << "Nominal: " << current->value.nominal << endl << endl;
     current = current->next;
@@ -324,52 +324,7 @@ Node *ENTRY_PENGELUARAN = nullptr;
 // - value not changing when editing amount
 void page__edit_entry() {
   Node *current = ENTRY_PENGELUARAN;
-  int i = 1;
-
-  cout << "no " << " judul " << " nominal " << endl;
-  while (current != nullptr) {
-    cout << i << ". " << current->value.judul << current->value.nominal << endl;
-
-    current = current->next;
-    i++;
-  }
-
-  int pilihan;
-  cout << "pilih no yg ingin diedit: ";
-  cin >> pilihan;
-
-  current = ENTRY_PENGELUARAN;
-  Node *entry_pilihan;
-  int j = 1;
-  while (current != nullptr) {
-    if (j == i) {
-      entry_pilihan = current;
-    }
-
-    current = current->next;
-    j++;
-  }
-
-  char judul_baru[250];
-  int nominal_baru;
-
-  cout << "isi dengan spasi bila tidak ingin mengedit" << endl;
-  cout << "judul: ";
-  cin.ignore();
-  cin.getline(judul_baru, 250);
-  cout << "nominal: ";
-  cin >> nominal_baru;
-
-  if (strcmp(judul_baru, " ") == 1) strcpy(entry_pilihan->value.judul, judul_baru);
-  if (nominal_baru) entry_pilihan->value.nominal = nominal_baru;
-
-  node_entry__print(ENTRY_PENGELUARAN);
-
-  cout << "berhasil mengedit!" << endl;
-  cout << "tekan tombol sembarang untuk kembali ke menu awal" << endl;
-
   getchar();
-
   // fungsi menu awal disini
 }
 
