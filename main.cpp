@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include <iomanip>
+#include <strings.h>
 
 using namespace std;
 
@@ -417,8 +418,31 @@ int BUDGET_PENGELUARAN;
 // - value not changing when editing amount
 void halaman__edit_pengeluaran() {
   Node *current = ENTRY_PENGELUARAN;
+
+  node_entry__print(ENTRY_PENGELUARAN);
+
+  int index_pilihan;
+  cout << "masukkan indeks entry yang ingin diedit: ";
+  cin >> index_pilihan;
+
+  Node *entry_pilihan = node__cari_berdasarkan_index(ENTRY_PENGELUARAN, index_pilihan);
+
+  char judul_baru[250];
+  int nominal_baru;
+
+  cout << "Judul baru (tekan enter untuk melewati): ";
+  cin.ignore();
+  cin.getline(judul_baru, 250);
+
+  cout << "Nominal baru (ketik 0 untuk melewati): ";
+  cin >> nominal_baru;
+
+  if (strcmp(judul_baru, "") != 0) strcpy(entry_pilihan->value.judul, judul_baru);
+  if (nominal_baru) entry_pilihan->value.nominal = nominal_baru;
+
+  cout << "Berhasil mengedit pengeluaran" << endl;
+  cout << "Tekan tombol sembarang untuk kembali..." << endl;
   getchar();
-  // fungsi menu awal disini
 }
 
 int main() {
@@ -435,6 +459,7 @@ int main() {
     cout << "4. Lihat Budget Bulanan" << endl;
     cout << "5. Total Pengeluaran Bulanan" << endl;
     cout << "6. Reset Data" << endl;
+    cout << "7. Edit Pengeluaran" << endl;
     cout << "0. Keluar" << endl;
     cout << "Pilihan: ";
     cin >> pilihan;
@@ -489,6 +514,10 @@ int main() {
         cout << "Tekan tombol sembarang untuk kembali ke menu" << endl;
         getchar();
       }
+    }
+    else if (pilihan == 7)
+    {
+      halaman__edit_pengeluaran();
     }
     else
     {
