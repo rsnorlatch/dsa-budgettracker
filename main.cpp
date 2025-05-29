@@ -415,8 +415,6 @@ int BUDGET_PENGELUARAN;
 
 void halaman__edit_pengeluaran() {
   system("clear");
-  Node *current = ENTRY_PENGELUARAN;
-
   node_entry__print(ENTRY_PENGELUARAN);
 
   Node *entry_pilihan = nullptr;
@@ -461,9 +459,6 @@ void halaman__edit_pengeluaran() {
 
 void halaman__hapus_pengeluaran() {
   system("clear");
-
-  Node *current = ENTRY_PENGELUARAN;
-
   node_entry__print(ENTRY_PENGELUARAN);
 
   Node *entry_pilihan = nullptr;
