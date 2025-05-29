@@ -414,6 +414,7 @@ Node *ENTRY_PENGELUARAN = nullptr;
 int BUDGET_PENGELUARAN;
 
 void halaman__edit_pengeluaran() {
+  system("clear");
   Node *current = ENTRY_PENGELUARAN;
 
   node_entry__print(ENTRY_PENGELUARAN);
@@ -451,10 +452,13 @@ void halaman__edit_pengeluaran() {
   if (strcmp(judul_baru, "") != 0) strcpy(entry_pilihan->value.judul, judul_baru);
   if (nominal_baru) entry_pilihan->value.nominal = nominal_baru;
 
+  file__simpan_linkedlist_entry(ENTRY_PENGELUARAN);
+
   cout << "Berhasil mengedit pengeluaran" << endl;
   cout << "Tekan tombol sembarang untuk kembali..." << endl;
   getchar();
 }
+
 
 int main() {
   file__baca_linkedlist_entry(ENTRY_PENGELUARAN);
