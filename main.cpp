@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <iomanip>
@@ -344,6 +345,7 @@ void halaman__set_budget_bulanan()
  * */
 void file__baca_linkedlist_entry(Node *&head) {
   FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
+  node__free(head);
   head = nullptr;
 
   while (true) {
@@ -366,6 +368,7 @@ int BUDGET_PENGELUARAN;
 
 void halaman__tambah_pengeluaran()
 {
+  system("clear");
   Entry data;
   cout << "=== Tambah Pengeluaran ===" << endl;
   cout << "Masukkan nama pengeluaran: ";
@@ -381,15 +384,19 @@ void halaman__tambah_pengeluaran()
     return;
   }
 
-  node__sisip_depan(ENTRY_PENGELUARAN, data); // added new node via new keywrod
+  node__sisip_depan(ENTRY_PENGELUARAN, data); 
   file__simpan_linkedlist_entry(ENTRY_PENGELUARAN);
 
   cout << "Pengeluaran berhasil ditambahkan!" << endl
        << endl;
+
+  cout << "Tekan tombol sembarang untuk kembali..." << endl;
+  getchar();
 }
 
 void halaman__lihat_sisa_budget()
 {
+  system("clear");
   int budget_bulanan;
   file__baca_target_bulanan(&budget_bulanan);
 
@@ -488,8 +495,16 @@ int main() {
   file__baca_target_bulanan(&BUDGET_PENGELUARAN);
 
   int pilihan;
+  string error;
+
   while (true)
   {
+    system("clear");
+
+    if (error != "") {
+      cout << error << endl;
+    }
+
     cout << "=== MENU ===" << endl;
     cout << "1. Lihat Pengeluaran" << endl;
     cout << "2. Tambah Pengeluaran" << endl;
@@ -512,7 +527,10 @@ int main() {
 
     if (pilihan == 1)
     {
+      system("clear");
       node_entry__print(ENTRY_PENGELUARAN);
+      cout << "Tekan tombol sembarang untuk kembali..." << endl;
+      getchar();
     }
     else if (pilihan == 2)
     {
@@ -520,16 +538,22 @@ int main() {
     }
     else if (pilihan == 3)
     {
+      system("clear");
       int budget;
       cout << "Masukkan Budget Bulanan: ";
       cin >> budget;
       cin.ignore();
       file__simpan_target_bulanan(&budget);
       cout << "Budget berhasil disimpan!" << endl;
+      cout << "Tekan tombol sembarang untuk kembali..." << endl;
+      getchar();
     }
     else if (pilihan == 4)
     {
+      system("clear");
       cout << "Budget Bulanan Saat Ini: " << BUDGET_PENGELUARAN << endl;
+      cout << "Tekan tombol sembarang untuk kembali..." << endl;
+      getchar();
     }
     else if (pilihan == 5)
     {
@@ -568,7 +592,7 @@ int main() {
     }
     else
     {
-      cout << "Pilihan tidak valid!" << endl;
+      error = "pilihan tidak valid!";
     }
   }
 }
