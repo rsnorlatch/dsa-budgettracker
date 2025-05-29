@@ -505,6 +505,10 @@ int main() {
   {
     system("clear");
 
+    cout << setw(27) << setfill('-') << "" << endl;
+    cout << "Selamat datang di Budgetin!" << endl;
+    cout << setw(27) << setfill('-') << "" << endl << endl;
+
     if (error != "") {
       cout << error << endl;
     }
@@ -518,7 +522,7 @@ int main() {
     cout << "6. Reset Data" << endl;
     cout << "7. Edit Pengeluaran" << endl;
     cout << "8. Hapus Pengeluaran" << endl;
-    cout << "0. Keluar" << endl;
+    cout << "0. Keluar" << endl << endl;
     cout << "Pilihan: ";
     cin >> pilihan;
     cin.ignore();
