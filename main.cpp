@@ -410,6 +410,10 @@ void halaman__lihat_sisa_budget()
   cout << "Total Pengeluaran  : " << total_pengeluaran << endl;
   cout << "Sisa Budget        : " << sisa_budget << endl
        << endl;
+
+
+  cout << "Tekan tombol sembarang untuk kembali..." << endl;
+  getchar();
 }
 
 
@@ -540,10 +544,14 @@ int main() {
     {
       system("clear");
       int budget;
+
       cout << "Masukkan Budget Bulanan: ";
       cin >> budget;
       cin.ignore();
+
       file__simpan_target_bulanan(&budget);
+      BUDGET_PENGELUARAN = budget;
+
       cout << "Budget berhasil disimpan!" << endl;
       cout << "Tekan tombol sembarang untuk kembali..." << endl;
       getchar();
