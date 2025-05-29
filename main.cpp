@@ -190,6 +190,20 @@ Node *node_entry__cari_berdasarkan_judul(Node *head, string target) {
   return nullptr;
 }
 
+Node *node__cari_berdasarkan_index(Node *&head, int target_index) {
+  Node *current = head;
+  
+  for (int i = 1; current != nullptr; i++) {
+    if (i == target_index) {
+      return current;
+    }
+
+    current = current->next;
+  }
+
+  return nullptr;
+}
+
 
 /**
  * menjumlahkan semua nominal dalam linkedlist
