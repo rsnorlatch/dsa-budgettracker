@@ -148,7 +148,7 @@ void node_entry__print(Node *head) {
 
   Node *current = head;
 
-  for (int i = 0; current != nullptr; i++) {
+  for (int i = 1; current != nullptr; i++) {
     cout << "=== " << i << "===" << endl;
     cout << "Judul: " << current->value.judul << endl;
     cout << "Nominal: " << current->value.nominal << endl << endl;
@@ -374,7 +374,18 @@ void file__baca_linkedlist_entry(Node *&head) {
 }
 
 void file__reset_linkedlist_entry() {
-  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
+  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "wb");
+  /**/
+  /*fseek(file_linkedlist, 0, SEEK_END);*/
+  /*long size = ftell(file);*/
+  /*rewind(file_linkedlist);*/
+  /**/
+  /*for (long i = 0; i < size; ++i) {*/
+  /*  fputc(0, file_linkedlist);*/
+  /*}*/
+  /**/
+  /*freopen(file_linkedlist, "wb", file);*/
+
   fclose(file_linkedlist);
 }
 
@@ -399,6 +410,7 @@ void halaman__lihat_sisa_budget()
 }
 
 Node *ENTRY_PENGELUARAN = nullptr;
+int BUDGET_PENGELUARAN;
 
 // FIXME:
 // - memory leak when not inserting title then modifying amount in index one
@@ -410,6 +422,9 @@ void halaman__edit_pengeluaran() {
 }
 
 int main() {
+  file__baca_linkedlist_entry(ENTRY_PENGELUARAN);
+  file__baca_target_bulanan(&BUDGET_PENGELUARAN);
+
   int pilihan;
   while (true)
   {
@@ -419,6 +434,7 @@ int main() {
     cout << "3. Set Budget Bulanan" << endl;
     cout << "4. Lihat Budget Bulanan" << endl;
     cout << "5. Total Pengeluaran Bulanan" << endl;
+    cout << "6. Reset Data" << endl;
     cout << "0. Keluar" << endl;
     cout << "Pilihan: ";
     cin >> pilihan;
@@ -429,7 +445,6 @@ int main() {
 
     if (pilihan == 1)
     {
-      file__baca_linkedlist_entry(ENTRY_PENGELUARAN);
       node_entry__print(ENTRY_PENGELUARAN);
     }
     else if (pilihan == 2)
@@ -447,13 +462,33 @@ int main() {
     }
     else if (pilihan == 4)
     {
-      int budget;
-      file__baca_target_bulanan(&budget);
-      cout << "Budget Bulanan Saat Ini: " << budget << endl;
+      cout << "Budget Bulanan Saat Ini: " << BUDGET_PENGELUARAN << endl;
     }
     else if (pilihan == 5)
     {
       halaman__lihat_sisa_budget();
+    }
+    else if (pilihan == 6) 
+    {
+      system("clear");
+      cout << "Apakah anda yakin ingin menghapus data? (y/n)" << endl;
+      char pilihan;
+      cout << "pilihan: ";
+      cin >> pilihan;
+
+      if (pilihan == 'y') {
+        file__reset_target_bulanan();
+        file__reset_linkedlist_entry();
+        ENTRY_PENGELUARAN = nullptr;
+        
+        cout << "Berhasil menghapus data!" << endl;
+        cout << "Tekan tombol sembarang untuk kembali ke menu" << endl;
+        getchar();
+      } else {
+        cout << "Berhasil batal menghapus data!" << endl;
+        cout << "Tekan tombol sembarang untuk kembali ke menu" << endl;
+        getchar();
+      }
     }
     else
     {
