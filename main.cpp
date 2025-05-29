@@ -18,12 +18,14 @@ struct Entry {
 #define T Entry
 struct Node {
   T value;
+  Node *prev;
   Node *next;
 };
 
-Node *node__tambah(T data, Node *next) {
+Node *node__tambah(T data, Node *prev, Node *next) {
   Node *node_baru = new Node;
   node_baru->value = data;
+  node_baru->prev = prev;
   node_baru->next = next;
 
   return node_baru;
@@ -63,11 +65,11 @@ void node__free(Node *head) {
 
 
 void node__sisip_depan(Node *&head, T data) {
-  head = node__tambah(data, head);
+  head = node__tambah(data, nullptr, head);
 }
 
 void node__sisip_belakang(Node *&head, T data) {
-  Node *new_node = node__tambah(data, nullptr);
+  Node *new_node = node__tambah(data, new_node, nullptr);
 
   if (head == nullptr) {
     head = new_node;
