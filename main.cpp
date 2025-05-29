@@ -281,30 +281,15 @@ void file__baca_linkedlist_entry(Node *&head) {
   fclose(file_linkedlist);
 }
 
+void file__reset_linkedlist_entry() {
+  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
+  fclose(file_linkedlist);
+}
+
 Node *ENTRY_PENGELUARAN = nullptr;
 
 int main() {
-  node__sisip_depan(ENTRY_PENGELUARAN, {
-    .judul = "makanan",
-    .nominal = 15000
-  });
-
-  node__sisip_depan(ENTRY_PENGELUARAN, {
-    .judul = "minuman",
-    .nominal = 10000
-  });
-
-  node__sisip_depan(ENTRY_PENGELUARAN, {
-    .judul = "snack",
-    .nominal = 10000
-  });
-
-  Node *target = node_entry__cari_berdasarkan_judul(ENTRY_PENGELUARAN, "makanan");
-  int sum_nominal = node_entry__sum_nominal(ENTRY_PENGELUARAN);
-
-  cout << "judul penemuan: " << target->value.judul << endl;
-  cout << "sum pengeluaran: " << sum_nominal << endl;
-  
+  node_entry__print(ENTRY_PENGELUARAN);
 
   node__free(ENTRY_PENGELUARAN);
 }
