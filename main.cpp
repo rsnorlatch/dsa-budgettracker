@@ -413,19 +413,30 @@ void halaman__lihat_sisa_budget()
 Node *ENTRY_PENGELUARAN = nullptr;
 int BUDGET_PENGELUARAN;
 
-// FIXME:
-// - memory leak when not inserting title then modifying amount in index one
-// - value not changing when editing amount
 void halaman__edit_pengeluaran() {
   Node *current = ENTRY_PENGELUARAN;
 
   node_entry__print(ENTRY_PENGELUARAN);
 
-  int index_pilihan;
-  cout << "masukkan indeks entry yang ingin diedit: ";
-  cin >> index_pilihan;
+  Node *entry_pilihan = nullptr;
+  string error;
 
-  Node *entry_pilihan = node__cari_berdasarkan_index(ENTRY_PENGELUARAN, index_pilihan);
+  do {
+    if (error != "") {
+      cout << error << endl;
+    }
+
+    int index_pilihan;
+    cout << "masukkan indeks entry yang ingin diedit: ";
+    cin >> index_pilihan;
+
+    entry_pilihan = node__cari_berdasarkan_index(ENTRY_PENGELUARAN, index_pilihan);
+
+    if (entry_pilihan == nullptr) {
+      error = "Entry dengan index tersebut tidak ditemukkan!";
+    }
+
+  } while (entry_pilihan == nullptr);
 
   char judul_baru[250];
   int nominal_baru;
