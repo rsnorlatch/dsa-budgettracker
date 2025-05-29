@@ -294,16 +294,50 @@ void file__simpan_linkedlist_entry(Node *&head) {
   fclose(file_linkedlist);
 }
 
-/**
- * membaca linkedlist berisi entry dari file
- * penggunaan:
- *
- * Node *n = nullptr;
- *
- * file__baca_linkedlist_entry(n);
- *
- * node__free(n);
- * */
+// baru
+void halaman__set_budget_bulanan()
+{
+  int target_bulanan;
+  cout << "=== Set Budget Bulanan ===" << endl;
+  cout << "Masukkan target budget bulanan Anda: ";
+  cin >> target_bulanan;
+
+  if (target_bulanan < 0)
+  {
+    cout << "[ERROR] Nominal tidak boleh negatif!" << endl;
+    return;
+  }
+
+  file__simpan_target_bulanan(&target_bulanan);
+  cout << "Budget bulanan berhasil disimpan!" << endl
+       << endl;
+}
+
+void halaman__tambah_pengeluaran()
+{
+  extern Node *ENTRY_PENGELUARAN;
+
+  Entry data;
+  cout << "=== Tambah Pengeluaran ===" << endl;
+  cout << "Masukkan nama pengeluaran: ";
+  cin.ignore();
+  cin.getline(data.judul, 250);
+
+  cout << "Masukkan nominal pengeluaran: ";
+  cin >> data.nominal;
+
+  if (data.nominal < 0)
+  {
+    cout << "[ERROR] Nominal tidak boleh negatif!" << endl;
+    return;
+  }
+
+  node__sisip_depan(ENTRY_PENGELUARAN, data);
+  file__simpan_linkedlist_entry(ENTRY_PENGELUARAN);
+  cout << "Pengeluaran berhasil ditambahkan!" << endl
+       << endl;
+}
+// baruned
 void file__baca_linkedlist_entry(Node *&head) {
   FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
 
@@ -316,31 +350,87 @@ void file__baca_linkedlist_entry(Node *&head) {
   fclose(file_linkedlist);
 }
 
-Node *ENTRY_PENGELUARAN = nullptr;
+//total pengeluaran
+void halaman__lihat_sisa_budget()
+{
+  extern Node *ENTRY_PENGELUARAN;
 
+  int budget_bulanan;
+  file__baca_target_bulanan(&budget_bulanan);
+
+  file__baca_linkedlist_entry(ENTRY_PENGELUARAN);
+  int total_pengeluaran = node_entry__sum_nominal(ENTRY_PENGELUARAN);
+
+  int sisa_budget = budget_bulanan - total_pengeluaran;
+
+  cout << "=== Sisa Budget Bulanan ===" << endl;
+  cout << "Budget Bulanan     : " << budget_bulanan << endl;
+  cout << "Total Pengeluaran  : " << total_pengeluaran << endl;
+  cout << "Sisa Budget        : " << sisa_budget << endl
+       << endl;
+}
+
+Node *ENTRY_PENGELUARAN = nullptr;
 
 // FIXME:
 // - memory leak when not inserting title then modifying amount in index one
 // - value not changing when editing amount
-void page__edit_entry() {
+void halaman__edit_pengeluaran() {
   Node *current = ENTRY_PENGELUARAN;
   getchar();
   // fungsi menu awal disini
 }
 
+int main()
+{
+  int pilihan;
+  while (true)
+  {
+    cout << "=== MENU ===" << endl;
+    cout << "1. Lihat Pengeluaran" << endl;
+    cout << "2. Tambah Pengeluaran" << endl;
+    cout << "3. Set Budget Bulanan" << endl;
+    cout << "4. Lihat Budget Bulanan" << endl;
+    cout << "5. Total Pengeluaran Bulanan" << endl;
+    cout << "0. Keluar" << endl;
+    cout << "Pilihan: ";
+    cin >> pilihan;
+    cin.ignore();
 
-int main() {
-  
-  node__sisip_belakang(ENTRY_PENGELUARAN, {
-    .judul = "bakso",
-    .nominal = 10000
-  });
-  node__sisip_belakang(ENTRY_PENGELUARAN, {
-    .judul = "mie ayam",
-    .nominal = 10000
-  });
+    if (pilihan == 0)
+      break;
 
-  page__edit_entry();
-
-  node__free(ENTRY_PENGELUARAN);
+    if (pilihan == 1)
+    {
+      file__baca_linkedlist_entry(ENTRY_PENGELUARAN);
+      node_entry__print(ENTRY_PENGELUARAN);
+    }
+    else if (pilihan == 2)
+    {
+      halaman__tambah_pengeluaran();
+    }
+    else if (pilihan == 3)
+    {
+      int budget;
+      cout << "Masukkan Budget Bulanan: ";
+      cin >> budget;
+      cin.ignore();
+      file__simpan_target_bulanan(&budget);
+      cout << "Budget berhasil disimpan!" << endl;
+    }
+    else if (pilihan == 4)
+    {
+      int budget;
+      file__baca_target_bulanan(&budget);
+      cout << "Budget Bulanan Saat Ini: " << budget << endl;
+    }
+    else if (pilihan == 5)
+    {
+      halaman__lihat_sisa_budget();
+    }
+    else
+    {
+      cout << "Pilihan tidak valid!" << endl;
+    }
+  }
 }
