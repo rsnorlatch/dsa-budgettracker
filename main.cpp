@@ -459,6 +459,41 @@ void halaman__edit_pengeluaran() {
   getchar();
 }
 
+void halaman__hapus_pengeluaran() {
+  system("clear");
+
+  Node *current = ENTRY_PENGELUARAN;
+
+  node_entry__print(ENTRY_PENGELUARAN);
+
+  Node *entry_pilihan = nullptr;
+  string error;
+
+  do {
+    if (error != "") {
+      cout << error << endl;
+    }
+
+    int index_pilihan;
+    cout << "masukkan indeks entry yang ingin diedit: ";
+    cin >> index_pilihan;
+
+    entry_pilihan = node__cari_berdasarkan_index(ENTRY_PENGELUARAN, index_pilihan);
+
+    if (entry_pilihan == nullptr) {
+      error = "Entry dengan index tersebut tidak ditemukkan!";
+    }
+
+  } while (entry_pilihan == nullptr);
+
+  node__hapus_berdasarkan_alamat(ENTRY_PENGELUARAN, entry_pilihan);
+  file__simpan_linkedlist_entry(ENTRY_PENGELUARAN);
+
+  cout << "Berhasil menghapus pengeluaran" << endl;
+  cout << "Tekan tombol sembarang untuk kembali..." << endl;
+
+  getchar();
+}
 
 int main() {
   file__baca_linkedlist_entry(ENTRY_PENGELUARAN);
@@ -475,6 +510,7 @@ int main() {
     cout << "5. Total Pengeluaran Bulanan" << endl;
     cout << "6. Reset Data" << endl;
     cout << "7. Edit Pengeluaran" << endl;
+    cout << "8. Hapus Pengeluaran" << endl;
     cout << "0. Keluar" << endl;
     cout << "Pilihan: ";
     cin >> pilihan;
@@ -533,6 +569,10 @@ int main() {
     else if (pilihan == 7)
     {
       halaman__edit_pengeluaran();
+    }
+    else if (pilihan == 8)
+    {
+      halaman__hapus_pengeluaran();
     }
     else
     {
