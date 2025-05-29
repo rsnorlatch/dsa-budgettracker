@@ -37,6 +37,8 @@ void node__free(Node *head) {
     delete current;
     current = next;
   }
+
+  head = nullptr;
 }
 
 
@@ -64,8 +66,10 @@ void node__sisip_depan(Node *&head, T data) {
 }
 
 void node__sisip_belakang(Node *&head, T data) {
+  Node *new_node = node__tambah(data, nullptr);
+
   if (head == nullptr) {
-    head = node__tambah(data, nullptr);
+    head = new_node;
     return;
   }
 
@@ -73,7 +77,7 @@ void node__sisip_belakang(Node *&head, T data) {
 
   while (current != nullptr) {
     if (current->next == nullptr) {
-      current->next = node__tambah(data, nullptr);
+      current->next = new_node;
       return;
     }
 
@@ -328,10 +332,40 @@ void halaman__set_budget_bulanan()
        << endl;
 }
 
+/**
+ * membaca linkedlist berisi entry dari file
+ * penggunaan:
+ *
+ * Node *n = nullptr;
+ *
+ * file__baca_linkedlist_entry(n);
+ *
+ * node__free(n);
+ * */
+void file__baca_linkedlist_entry(Node *&head) {
+  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
+  head = nullptr;
+
+  while (true) {
+    T value;
+    if (fread(&value, sizeof(T), 1, file_linkedlist) != 1) break;
+    node__sisip_belakang(head, value);
+  }
+
+  fclose(file_linkedlist);
+}
+
+void file__reset_linkedlist_entry() {
+  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "wb");
+
+  fclose(file_linkedlist);
+}
+
+Node *ENTRY_PENGELUARAN = nullptr;
+int BUDGET_PENGELUARAN;
+
 void halaman__tambah_pengeluaran()
 {
-  extern Node *ENTRY_PENGELUARAN;
-
   Entry data;
   cout << "=== Tambah Pengeluaran ===" << endl;
   cout << "Masukkan nama pengeluaran: ";
@@ -347,54 +381,15 @@ void halaman__tambah_pengeluaran()
     return;
   }
 
-  node__sisip_depan(ENTRY_PENGELUARAN, data);
+  node__sisip_depan(ENTRY_PENGELUARAN, data); // added new node via new keywrod
   file__simpan_linkedlist_entry(ENTRY_PENGELUARAN);
+
   cout << "Pengeluaran berhasil ditambahkan!" << endl
        << endl;
 }
-/**
- * membaca linkedlist berisi entry dari file
- * penggunaan:
- *
- * Node *n = nullptr;
- *
- * file__baca_linkedlist_entry(n);
- *
- * node__free(n);
- * */
-void file__baca_linkedlist_entry(Node *&head) {
-  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "rb");
 
-  while (true) {
-    T value;
-    if (fread(&value, sizeof(T), 1, file_linkedlist) != 1) break;
-    node__sisip_belakang(head, value);
-  }
-
-  fclose(file_linkedlist);
-}
-
-void file__reset_linkedlist_entry() {
-  FILE *file_linkedlist = fopen("./store/linkedlist.bin", "wb");
-  /**/
-  /*fseek(file_linkedlist, 0, SEEK_END);*/
-  /*long size = ftell(file);*/
-  /*rewind(file_linkedlist);*/
-  /**/
-  /*for (long i = 0; i < size; ++i) {*/
-  /*  fputc(0, file_linkedlist);*/
-  /*}*/
-  /**/
-  /*freopen(file_linkedlist, "wb", file);*/
-
-  fclose(file_linkedlist);
-}
-
-//total pengeluaran
 void halaman__lihat_sisa_budget()
 {
-  extern Node *ENTRY_PENGELUARAN;
-
   int budget_bulanan;
   file__baca_target_bulanan(&budget_bulanan);
 
@@ -410,8 +405,6 @@ void halaman__lihat_sisa_budget()
        << endl;
 }
 
-Node *ENTRY_PENGELUARAN = nullptr;
-int BUDGET_PENGELUARAN;
 
 void halaman__edit_pengeluaran() {
   system("clear");
@@ -512,7 +505,10 @@ int main() {
     cin.ignore();
 
     if (pilihan == 0)
+    {
+      node__free(ENTRY_PENGELUARAN);
       break;
+    }
 
     if (pilihan == 1)
     {
@@ -550,6 +546,7 @@ int main() {
       if (pilihan == 'y') {
         file__reset_target_bulanan();
         file__reset_linkedlist_entry();
+        node__free(ENTRY_PENGELUARAN);
         ENTRY_PENGELUARAN = nullptr;
         
         cout << "Berhasil menghapus data!" << endl;

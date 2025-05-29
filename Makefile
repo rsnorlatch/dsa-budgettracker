@@ -24,3 +24,5 @@ build_stable: main.cpp | ./build
 clean:
 	rm -rf ./build ./plist
 
+clean-store:
+	rm -rf ./store
