@@ -475,6 +475,15 @@ void halaman__edit_pengeluaran() {
 
 void halaman__hapus_pengeluaran() {
   system("clear");
+
+  if (ENTRY_PENGELUARAN == nullptr) {
+    cout << "Anda belum mencatat pengeluaran. Catat minimal satu pengeluaran untuk menghapus!" << endl;
+    cout << "Tekan tombol sembarang untuk kembali..." << endl;
+    getchar();
+    
+    return;
+  }
+
   node_entry__print(ENTRY_PENGELUARAN);
 
   Node *entry_pilihan = nullptr;
