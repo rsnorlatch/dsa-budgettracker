@@ -422,6 +422,14 @@ void halaman__lihat_sisa_budget()
 
 void halaman__edit_pengeluaran() {
   system("clear");
+
+  if (ENTRY_PENGELUARAN == nullptr) {
+    cout << "Anda belum mencatat pengeluaran. Catat minimal satu pengeluaran untuk mengedit!" << endl;
+    cout << "Tekan tombol sembarang untuk kembali..." << endl;
+    getchar();
+
+    return;
+  }
   
   node_entry__print(ENTRY_PENGELUARAN);
 
