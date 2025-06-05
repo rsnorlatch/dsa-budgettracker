@@ -69,7 +69,7 @@ void node__sisip_depan(Node *&head, T data) {
 }
 
 void node__sisip_belakang(Node *&head, T data) {
-  Node *new_node = node__tambah(data, new_node, nullptr);
+  Node *new_node = node__tambah(data, nullptr, nullptr);
 
   if (head == nullptr) {
     head = new_node;
@@ -81,6 +81,7 @@ void node__sisip_belakang(Node *&head, T data) {
   while (current != nullptr) {
     if (current->next == nullptr) {
       current->next = new_node;
+      current->next->prev = current;
       return;
     }
 
