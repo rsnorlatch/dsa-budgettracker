@@ -375,7 +375,6 @@ void halaman__tambah_pengeluaran()
   Entry data;
   cout << "=== Tambah Pengeluaran ===" << endl;
   cout << "Masukkan nama pengeluaran: ";
-  cin.ignore();
   cin.getline(data.judul, 250);
 
   cout << "Masukkan nominal pengeluaran: ";
@@ -394,6 +393,7 @@ void halaman__tambah_pengeluaran()
        << endl;
 
   cout << "Tekan tombol sembarang untuk kembali..." << endl;
+  cin.ignore();
   getchar();
 }
 
@@ -422,6 +422,7 @@ void halaman__lihat_sisa_budget()
 
 void halaman__edit_pengeluaran() {
   system("clear");
+  
   node_entry__print(ENTRY_PENGELUARAN);
 
   Node *entry_pilihan = nullptr;
@@ -493,6 +494,7 @@ void halaman__hapus_pengeluaran() {
 
   cout << "Berhasil menghapus pengeluaran" << endl;
   cout << "Tekan tombol sembarang untuk kembali..." << endl;
+  cin.ignore();
 
   getchar();
 }
@@ -590,6 +592,7 @@ int main() {
         
         cout << "Berhasil menghapus data!" << endl;
         cout << "Tekan tombol sembarang untuk kembali ke menu" << endl;
+        cin.ignore();
         getchar();
       } else {
         cout << "Berhasil batal menghapus data!" << endl;
